@@ -34,3 +34,9 @@ ggplot(dados1, aes(empresa,fill=tamanho))+geom_bar()+scale_fill_brewer(palette='
 
 #Dividir por variável
 ggplot(dados1, aes(empresa,fill=empresa))+geom_bar()+scale_fill_brewer(palette='Set3')+theme_dark()+facet_wrap(~tamanho)
+
+
+
+
+
+
