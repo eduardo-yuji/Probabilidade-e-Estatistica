@@ -1,4 +1,10 @@
 install.packages('ggplot2')
+install.packages("treemapify")
+install.packages("wordcloud2")
+install.packages("gganimate")
+install.packages(("gifski"))
+install.packages(("png"))
+
 library(ggplot2)
 
 dados1 = read.csv('dados_plot.csv',sep = ',',dec = '.',header = T)
@@ -12,6 +18,7 @@ ggplot(dados1, aes(empresa,fill=empresa))+geom_bar()+scale_fill_brewer(palette='
 #tendencia
 ggplot(dados1, aes(rendimento, vendas))+geom_point()+geom_smooth()
 #cor
+
 ggplot(dados1, aes(rendimento, vendas, col=empresa))+geom_point()
 #tendencia por empresa
 ggplot(dados1, aes(rendimento, vendas, col=empresa))+geom_point()+geom_smooth(s)
@@ -65,5 +72,44 @@ ggplot(dados1,aes(x=empresa,y=rendimento,fill=empresa))+geom_boxplot()+facet_wra
 #ggplot(dados1,aes(x=empresa,y=rendimento,fill=empresa))+geom_boxplot()+facet_wrap(~empresa)
 
 ggplot(dados1,aes(x=empresa,y=rendimento,fill=empresa))+geom_violin()
+
+
+####treemapfiy####
+library(treemapify)
+
+dados2=as.data.frame(table(dados1$empresa))
+names(dados2)=c('empresa','Freq')
+dados2
+ggplot(dados2,aes(area=Freq,fill=empresa))+geom_treemap()
+
+#rendimento pmedio por tamanho x empresa
+dados1$interacao=interaction(dados1$tamanho,dados1$empresa)
+dados3=as.data.frame(tapply(dados1$rendimento,dados1$interacao,mean))
+dados3
+dados3$nomes=labels(dados3)[[1]]
+names(dados3)[1]='total'
+dados3
+ggplot(dados3,aes(area=total,fill=nomes))+geom_treemap()
+
+
+####nuvem de letras####
+#dados com palavras
+library(wordcloud2)
+dados4=dados1[,6:7]
+dados4
+wordcloud2(data=dados4,size=1.6)
+
+
+####graficos animados - pontos e linhas####
+library(gganimate)
+library(gifski)
+library(png)
+
+g=ggplot(dados1,aes(x=rendimento,vendas,col=empresa))+geom_line()+geom_point()
+g=g+transition_reveal(rendimento)
+
+animate(g,render=gifski_renderer())
+
+
 
 
