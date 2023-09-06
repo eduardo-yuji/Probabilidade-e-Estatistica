@@ -2,8 +2,10 @@ install.packages('ggplot2')
 install.packages("treemapify")
 install.packages("wordcloud2")
 install.packages("gganimate")
-install.packages(("gifski"))
-install.packages(("png"))
+install.packages("gifski")
+install.packages("png")
+install.packages("gapminder")
+
 
 library(ggplot2)
 
@@ -21,7 +23,7 @@ ggplot(dados1, aes(rendimento, vendas))+geom_point()+geom_smooth()
 
 ggplot(dados1, aes(rendimento, vendas, col=empresa))+geom_point()
 #tendencia por empresa
-ggplot(dados1, aes(rendimento, vendas, col=empresa))+geom_point()+geom_smooth(s)
+ggplot(dados1, aes(rendimento, vendas, col=empresa))+geom_point()+geom_smooth()
 #revomer desvio padrao (standard false)
 ggplot(dados1, aes(rendimento, vendas, col=empresa))+geom_point()+geom_smooth(se=F)
 #tendencia por empresa separados
@@ -110,6 +112,9 @@ g=g+transition_reveal(rendimento)
 
 animate(g,render=gifski_renderer())
 
+####animado dispersao####
+library(gapminder)
+head(gapminder)
 
 
 
