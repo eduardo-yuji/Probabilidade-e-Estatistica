@@ -1,3 +1,6 @@
+#d = Probabildade de um ponto -> NÃO EXISTE PARA MODELOS CONTÍNUOS
+#p = Probailidade de um valor ou menos
+
 ####27/09####
 #n = 10
 #p = 0.1
@@ -115,5 +118,51 @@ x=rexp(500,taxa)
 dx=dexp(x,taxa)
 dados = data.frame(x,dx)
 ggplot(dados,aes(x))+geom_histogram(aes(y=..density..))+geom_line(aes(x,dx,col='red'))
+
+#sabe-se que o peso em kg de determinado produto possui média 50 e variância 25. Determine:
+#desvio padrão = raiz da variância
+#probabilidade de um ponto não existe em modelos continuos
+dnorm(x,50,5) #A probabilidade de um produto pesar exatamente 20 kg
+#Integral de 20 a 20,portanto é 0
+
+1-pnorm(20,50,5) #A probabilidade de pesar mais de 20 kg
+
+qnorm(0.25,50,5) #Determine o valor do primeiro quartil (0.25)
+
+rnorm(20,50,5) #Uma amostra aleatória de tamanho 20
+
+#1) Um histograa de uma amostra de tamanho 700
+x=rnorm(700,50,5)
+dx=dnorm(x,50,5)
+dados = data.frame(x,dx)
+ggplot(dados,aes(x))+geom_histogram(aes(y=..density..),bins=40)
+
+#2) Adicione uma linha no histograma como a probabilidade calculadas
+ggplot(dados,aes(x))+geom_histogram(aes(y=..density..),bins=40)+geom_line(aes(x,dx,col='red'))
+
+#Para a seguinte função, determine a constante k para que seja uma função de probabilidade
+#de uma variável aleatória discreta
+#P(X=xi)=xik xi=1,2,...,10
+k=1/sum(1:10)
+
+#Dado que 70% de determinado componente eltrico não apresetem falha após a produção,
+#Em uma amostra de 10 componentes, calcule:
+
+#a) a probabilidade de que nenhum falhe
+dbinom(10,10,0.7)
+dbinom(0,10,0.3)
+#b) a probabilidade de que no mínimo 1 falhe
+1-dbinom(0,10,0.3)
+#c) a probabilidade de que ao menos 3 falhem
+1-pbinom(2,10,0.3)
+
+#d) se a amostra for de 50 componentes, quantos irão falhar em média?
+50*3/10
+
+#e) apresente graficamente todas as probabilidades de falhar
+x=0:10
+px=dbinom(x,10,0.3)
+dados = data.frame(x,px)
+ggplot(dados,aes(x,px))+geom_col()
 
 
