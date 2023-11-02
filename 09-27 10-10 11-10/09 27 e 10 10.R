@@ -39,9 +39,8 @@ prob(12, 16, 3/4) #Exatamente 12 tenham feito cursinho?
 3*80/4
 (3/4)*(1-3/4)
 
-####10/10####
 
-#Poisson
+####Poisson e Binomial ####
   prob = function(y,x){
     (exp(-y)*(y^x))/(factorial(x))
   }
@@ -79,7 +78,6 @@ px=dbinom(x,5,1/3)
 dados = data.frame(x,px)
 ggplot(dados,aes(x,px))+geom_col()
 
-####11/10####
 
 #media = 40 itens por segundo
 
@@ -101,6 +99,8 @@ ggplot(dados,aes(x,px))+geom_col()
 
 
 #### Modelo Exponencial ####
+
+
 #modelo Exponencial -> começa do 0 -> coisas positivas
 #modelo normal -> -inf até +inf
 #taxa = 1/media
@@ -118,6 +118,9 @@ x=rexp(500,taxa)
 dx=dexp(x,taxa)
 dados = data.frame(x,dx)
 ggplot(dados,aes(x))+geom_histogram(aes(y=..density..))+geom_line(aes(x,dx,col='red'))
+
+#### Modelo Normal ####
+
 
 #sabe-se que o peso em kg de determinado produto possui média 50 e variância 25. Determine:
 #desvio padrão = raiz da variância
@@ -144,6 +147,9 @@ ggplot(dados,aes(x))+geom_histogram(aes(y=..density..),bins=40)+geom_line(aes(x,
 #de uma variável aleatória discreta
 #P(X=xi)=xik xi=1,2,...,10
 k=1/sum(1:10)
+
+
+####Modelo Binomial####
 
 #Dado que 70% de determinado componente eltrico não apresetem falha após a produção,
 #Em uma amostra de 10 componentes, calcule:
