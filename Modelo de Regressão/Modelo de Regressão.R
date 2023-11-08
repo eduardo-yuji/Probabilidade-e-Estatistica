@@ -1,7 +1,9 @@
 install.packages("manipulate")
 install.packages("ggplot2")
+install.packages("labeling")
 library(manipulate)
 library(ggplot2)
+library(labeling)
 
 x=runif(100,5,80)
 y=10+6*x+rnorm(100,0,20)
@@ -53,3 +55,66 @@ plot(modelo2)
 km=c(1:10)
 dadosnovo=data.frame(km)
 predict(modelo2,newdata=dadosnovo) #previsão de tempo para k 1:10
+
+####Modelo de Regressão Linear Multipla####
+install.packages("GGally")
+library(GGally)
+
+dados3=read.csv("dados3.csv")
+head(dados3)
+ggpairs(dados3)
+
+modelo3=gamlss(tempo~km+temperatura+pb(chuva),data=dados3)
+summary(modelo3)#não interpretar pb
+#Interpretar as * no Mu Coefficients, temperatura não tem estrela, não influencia nos dados
+#remover temperatura do do modelo
+modelo3=gamlss(tempo~km+pb(chuva),data=dados3)
+summary(modelo3)
+
+modelo3$mu.fv
+term.plot(modelo3)
+
+plot(modelo3)#verificar se o modelo está bem ajustado
+cbind(modelo3$mu.fv,dados3$tempo)
+dados3$fv=modelo3$mu.fv
+ggplot(dados3,aes(fv,tempo))+geom_point()+geom_smooth() #verificar se o modelo está bem ajustado
+
+#tempo~ = -52.54177 + 2.98725Km -> a cada 1 km aumenta em 2.98725 o tempo
+km = 35
+chuva = 82
+dados3novo=data.frame(km,chuva)
+predict(modelo3,newdata=dados3novo)
+
+
+
+
+dados4=read.csv("house_price.csv")
+head(dados4)
+names(dados4)
+
+ggpairs(dados4)
+modelo4=gamlss(Y.house.price.of.unit.area~pb(X2.house.age)+X3.distance.to.the.nearest.MRT.station+
+                 X4.number.of.convenience.stores+pb(X5.latitude)+pb(X6.longitude),data=dados4)
+term.plot(modelo4)
+summary(modelo4)
+
+plot(modelo4)
+
+
+
+install.packages("leaflet")
+install.packages("sp")
+install.packages("sf")
+library(leaflet)
+library(sp)
+library(sf)
+
+lon = dados4$X6.longitude
+lat = dados4$X5.latitude
+
+leaflet() %>%
+  addTiles() %>%
+  addCircles(lng=lon[dados4$classe=='nova'], lat=lat[dados4$classe=='nova'],color = 'red')%>%
+  addCircles(lng=lon[dados4$classe=='velha'], lat=lat[dados4$classe=='velha'],color = 'blue')
+
+dados4$classe=ifelse(dados4$X2.house.age<=20,'nova','velha')
